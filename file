@@ -1,1 +1,79 @@
-hello
+//task1
+
+function getEmployeeProfiles(employees) {
+  return employees.map(emp => ({
+    fullName: `${emp.firstName} ${emp.lastName}`,
+    department: emp.department,
+    skillsText: emp.skills.join(", ")
+  }));
+}
+
+function getHighPerformers(employees, salaryThreshold, minProjects) {
+  return employees
+    .filter(emp => emp.salary >= salaryThreshold && emp.projectsCompleted >= minProjects)
+    .map(emp => `${emp.firstName} ${emp.lastName}`);
+}
+
+function getDepartmentAnalytics(employees) {
+  const analytics = {};
+
+  employees.forEach(emp => {
+    const dept = emp.department;
+    if (!analytics[dept]) {
+      analytics[dept] = {
+        employeeCount: 0,
+        totalSalary: 0,
+        totalProjects: 0
+      };
+    }
+    analytics[dept].employeeCount += 1;
+    analytics[dept].totalSalary += emp.salary;
+    analytics[dept].totalProjects += emp.projectsCompleted;
+  });
+
+  for (const dept in analytics) {
+    analytics[dept].averageSalary = Math.round(analytics[dept].totalSalary / analytics[dept].employeeCount);
+    delete analytics[dept].totalSalary;
+  }
+
+  return analytics;
+}
+
+function getSkillExperts(employees, requiredSkills) {
+  return employees
+    .filter(emp => requiredSkills.every(skill => emp.skills.includes(skill)))
+    .map(emp => ({
+      name: `${emp.firstName} ${emp.lastName}`,
+      matchingSkills: requiredSkills.length
+    }));
+}
+
+function getSkillsReport(employees, targetSkills) {
+  const skills = targetSkills.split(",").map(s => s.trim());
+  const skillCoverage = {};
+  const expertsPerSkill = {};
+
+  skills.forEach(skill => {
+    skillCoverage[skill] = 0;
+    expertsPerSkill[skill] = [];
+  });
+
+  employees.forEach(emp => {
+    skills.forEach(skill => {
+      if (emp.skills.includes(skill)) {
+        skillCoverage[skill]++;
+        expertsPerSkill[skill].push(`${emp.firstName} ${emp.lastName}`);
+      }
+    });
+  });
+
+  for (const skill in expertsPerSkill) {
+    expertsPerSkill[skill] = expertsPerSkill[skill].join(", ");
+  }
+
+  return {
+    totalEmployees: employees.length,
+    skillCoverage,
+    expertsPerSkill
+  };
+}
