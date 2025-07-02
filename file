@@ -79,7 +79,7 @@ function getSkillsReport(employees, targetSkills) {
 }
 
 
-//task 2 (couldnt identify anything to change, what you gave me is already a full code answering all questions)
+//task 2 (nothing to add ive checked twice)
 
 
 <!DOCTYPE html>
@@ -626,6 +626,8 @@ h2 {
     width: 100%;
   }
 }
+
+
 
 
 
